@@ -45,40 +45,24 @@ $outbound_message = "" ;
 
 if (preg_match('/^(STOP)$/', $message)) {
     $outbound_message = "You have been removed from our distribution list. Sorry to see you go.";
-} elseif (preg_match('/^(BUY) [0-9]+ [A-Z]+/', $message)) {
+} elseif (preg_match('/^(DEFINE) [A-Z]+/', $message)) {
     $firstSpacePos = strpos($message, ' ');
     $action = substr($message, 0, $firstSpacePos);
-    $secondSpacePos = strpos($message, ' ', $firstSpacePos + 1);
-    if ($firstSpacePos !== false && $secondSpacePos !== false) {
-        $quantity = substr($message, $firstSpacePos + 1, $secondSpacePos - $firstSpacePos - 1);
-    }
-    $symbol = substr($message, $secondSpacePos + 1);
-
-    $stock_info = get_stock_data($symbol);
-    $stock_cost = $stock_info * $quantity;
-
-    if ($stock_info == false) {
-        $outbound_message = "Sorry but we could not act on that message at this time. Please try again later.";
+    $word = trim(substr($message, $firstSpacePos + 1));
+    $results = get_dictionary_data($word);
+    if ($results == false) {
+        $outbound_message = "Sorry but we could not locate a definition for $word. Please try a different word. ";
     } else {
-        $outbound_message = "Thank you for your BUY order for $quantity of $symbol. It is currently trading at $";
-        $outbound_message .= number_format($stock_info,2,".", ",");
-        $outbound_message .= " per share. So your total cost will be: $";
-        $outbound_message .= number_format($stock_cost,2,".", ",");;
-        $outbound_message .= " We will attempt to acquire it at that price.";
-    }
-} elseif (preg_match('/^(PRICE) [A-Z]+/', $message)) {
-    $firstSpacePos = strpos($message, ' ');
-    $action = substr($message, 0, $firstSpacePos);
-    $symbol = substr($message, $firstSpacePos + 1);
-    $stock_info = get_stock_data($symbol);
-    if ($stock_info == false) {
-        $outbound_message = "Sorry but we could not act on that message at this time. Please try again later. ";
-    } else {
-        $outbound_message = "The current per share price of $symbol is $";
-        $outbound_message .= number_format($stock_info,2,".", ",") . " Thanks for your inquiry.";
+        $answer = "[" . $results['pos'] . "] \"" . $results['def'] . "\"";
+        $outbound_message = "We found this definition for: $word - ";
+        $outbound_message .= $answer ;
+        if ($results['ex1']) {
+            $outbound_message .= " Here is an example sentence: \"" . $results['ex1'] . "\""; ;
+        }
+        $outbound_message .= " \nThanks for your inquiry.";
     }
 } elseif (preg_match('/^(HELP)$/', $message)) {
-    $outbound_message = 'Help Message for FinServe goes here...';
+    $outbound_message = 'Help Message for Dictionary app goes here...';
 } else {
     $outbound_message = "We did not understand your request. Please check the format of your request and try again.";
 }

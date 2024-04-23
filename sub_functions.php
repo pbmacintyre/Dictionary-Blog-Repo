@@ -8,6 +8,21 @@ function show_errors() {
 //     error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
     ini_set('display_errors', 1);
 }
+function echo_spaces($text, $value="", $lines=0) {
+    echo "<br /><strong><p style='color: red; display: inline'>$text:</p></strong> " ;
+    if (is_string($value) || is_int($value))  { echo $value; }
+    if (is_object($value) || is_array($value)) { dump_obj($value); }
+    $i = 1 ;
+    while ($i <= $lines) {
+        echo "<br />" ;
+        $i++;
+    }
+}
+function dump_obj($object) {
+    echo "<pre>";
+    var_dump($object);
+    echo "</pre>";
+}
 
 /* ================================== */
 /* ====== SDK Function ============== */
@@ -39,7 +54,7 @@ function mySDK () {
 }
 
 function get_dictionary_data ($word) {
-    $msg = "";
+    $msg = array();
     $url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' . $word;
     $response = file_get_contents($url);
     if ($response === false) {
@@ -48,7 +63,10 @@ function get_dictionary_data ($word) {
     } else {
         // turn the JSON response into an associative array
         $data = json_decode($response, true);
-        $msg = $data['chart']['result'][0]['meta']['regularMarketPrice'];
+
+        $msg['def']  = $data[0]['meanings'][0]['definitions'][0]['definition'];
+        $msg['pos']  = $data[0]['meanings'][0]['partOfSpeech'];
+        $msg['ex1']  = $data[0]['meanings'][0]['definitions'][0]['example'];
     }
     return $msg;
 }
