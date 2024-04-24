@@ -9,7 +9,7 @@ require_once "sub_functions.php" ;
 // create watching subscription for handling SMS messages
 $sdk = mySDK();
 
-$webhook_token = "026d127e-2ae6-4aed-bfc4-215a1b17f2b9" ;
+$webhook_token = "Provide webhook token"; ;
 try {
     $sdk->platform()->delete("/subscription/{$webhook_token}");
     echo "<p style='color: green;'>Subscription [$webhook_token] deleted successfully!</p>";

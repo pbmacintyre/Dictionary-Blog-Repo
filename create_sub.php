@@ -6,7 +6,7 @@
 
 require_once "sub_functions.php" ;
 
-if (create_finserv_webhook_subscription()) {
+if (create_dictionary_webhook_subscription()) {
  echo "<p style='color: green;'>Subscription created successfully!</p>";
 } else {
     echo "<p style='color: red;'>Subscription could not be created at this time.</p>";
@@ -15,7 +15,7 @@ if (create_finserv_webhook_subscription()) {
 /* ================================================== */
 /* ====== Create Subscription Function ============== */
 /* ================================================== */
-function create_finserv_webhook_subscription () {
+function create_dictionary_webhook_subscription () {
     // create watching subscription for handling SMS messages
     $sdk = mySDK();
     try {
@@ -28,7 +28,7 @@ function create_finserv_webhook_subscription () {
                 "deliveryMode" => array(
                     "transportType" => "WebHook",
                     // need full URL for this to work as well
-                    "address" => "https://paladin-bs.com/dictionary_blog/dictionary_webhook.php",
+                    "address" => "https://PROVIDE THE ADDRESS FOR THE WEBHOOK PROCESSOR/dictionary_webhook.php",
                 )
             )
         );

@@ -1,1 +1,0 @@
-<?php/** * Copyright (C) 2019-2024 Paladin Business Solutions * */require_once "sub_functions.php";//show_errors();$word = "stealing";$results = get_dictionary_data ($word) ;if (!$results) {    echo_spaces("Is that a word ?", $word);} else {    echo_spaces("Submitted word", $word);    echo_spaces("result", $results);}
