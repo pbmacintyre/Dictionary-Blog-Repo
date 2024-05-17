@@ -43,8 +43,8 @@ $incoming_client_mobile_number = $incoming_data->body->from->phoneNumber;
 $outbound_message = "" ;
 // use the shopify shop ringCentral SDK based on the shops JWT and therefore the shops SMS active number
 
-if (preg_match('/^(STOP)$/', $message)) {
-    $outbound_message = "You have been removed from our distribution list. Sorry to see you go.";
+if (preg_match('/^(STOP|UNSUBSCRIBE)$/', $message)) {
+    $outbound_message = "You have been removed from our dictionary distribution list. Sorry to see you go.";
 } elseif (preg_match('/^(DEFINE) [A-Z]+/', $message)) {
     $firstSpacePos = strpos($message, ' ');
     $action = substr($message, 0, $firstSpacePos);
@@ -61,8 +61,8 @@ if (preg_match('/^(STOP)$/', $message)) {
         }
         $outbound_message .= " \nThanks for your inquiry.";
     }
-} elseif (preg_match('/^(HELP)$/', $message)) {
-    $outbound_message = 'Help Message for Dictionary app goes here...';
+} elseif (preg_match('/^(HELP|INFO)$/', $message)) {
+    $outbound_message = 'Help | Info Message for Dictionary app goes here...';
 } else {
     $outbound_message = "We did not understand your request. Please check the format of your request and try again.";
 }

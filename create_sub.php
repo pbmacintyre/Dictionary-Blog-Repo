@@ -28,7 +28,7 @@ function create_dictionary_webhook_subscription () {
                 "deliveryMode" => array(
                     "transportType" => "WebHook",
                     // need full URL for this to work as well
-                    "address" => "https://PROVIDE THE ADDRESS FOR THE WEBHOOK PROCESSOR/dictionary_webhook.php",
+                    "address" => "https://paladin-bs.com/dictionary_blog/dictionary_webhook.php",
                 )
             )
         );
